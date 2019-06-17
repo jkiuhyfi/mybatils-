@@ -1,0 +1,81 @@
+1.主键自增
+
+ <insert id="" keyProperty="id" useGeneratedKeys="true">
+        
+ </insert>
+
+2.占位符与字符串拼接
+
+占位符 #{}  
+字符串拼接 ${}
+
+3.where if  text
+
+where:替代原来的where
+
+SELECT
+	*
+FROM
+	user
+<where>
+
+          <if test="sex !=null and sex !=''">
+              sex = #{sex}
+          </if>
+
+        <if test="username !=null and username !=''">
+            AND username like '%${username}%'
+        </if>
+
+</where>
+
+4.sql  include
+
+
+   <sql id="user">
+    SELECT
+	*
+    FROM
+	user
+    </sql>
+
+<include refid="user"></include>
+
+
+5.forearch
+
+forearch------>collection(集合放 list或array)------>动态(in查询) 静态(批量插入)
+
+
+
+动态in查询
+
+public List<Items>  findByIn(List<Integer> in);
+
+  <!-- in查询 -->
+    <select id="findByIn" resultType="com.xc.course.pojo.Items" parameterType="java.lang.Integer">
+        select *  from items
+        <where>
+        id in
+        <foreach collection="list" item="item" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+        </where>
+    </select>
+    <!-- in查询结束 -->
+
+静态（批量插入）
+
+public void  addAll(List<Items> items);
+
+<!--批量插入-->
+    <insert id="addAll" parameterType="com.xc.course.pojo.Items">
+         INSERT INTO items VALUES
+         <foreach collection="list" separator="," item="item">
+             (#{item.id},#{item.name},#{item.price},#{item.detail},#{item.pic},#{item.createtime})
+         </foreach>
+    </insert>
+    <!--批量插入结束-->
+
+
+

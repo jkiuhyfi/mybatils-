@@ -1,0 +1,39 @@
+
+1.多对一：association property="user" javaType="User" （类型是实体property所在的pojo的名称） 一的一方：column id的重命名
+
+
+    //多对一
+    public List<Orders> findManytoOne();
+
+    <!-- 多对一 -->
+    <select id="findManytoOne" resultMap="map">
+SELECT
+   o.*,
+   u.id as uid,
+   u.username,
+   u.sex,
+   u.birthday,
+   u.address
+FROM
+	orders o,
+	user u
+WHERE
+	o.user_id = u.id and u.id=1
+    </select>
+
+    <resultMap id="map" type="com.xc.course.pojo.Orders">
+        <id column="id" property="id"></id>
+        <result column="userId" property="userId"></result>
+        <result column="number" property="number"></result>
+        <result column="createtime" property="createtime"></result>
+        <result column="note" property="note"></result>
+
+        <association property="user" javaType="User">
+            <id column="uid" property="id"></id>
+            <result column="username" property="username"></result>
+            <result column="sex" property="sex"></result>
+            <result column="birthday" property="birthday"></result>
+            <result column="address" property="address"></result>
+        </association>
+    </resultMap>
+    <!-- 多对一结束-->

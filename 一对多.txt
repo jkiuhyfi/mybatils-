@@ -1,0 +1,37 @@
+1.一对多
+
+collection    property="orderdetails" ofType="Orderdetail"(oftype就是list<Orderdetail>的类型)   id的重命名
+
+
+
+  //一对多
+    public List<Orders> findOnetoMany();
+
+  <!-- 一对多 -->
+    <select id="findOnetoMany" resultMap="m">
+ SELECT
+	o.*, ol.id AS oid,
+	ol.items_id,
+	ol.items_num,
+	ol.orders_id
+FROM
+	orders o,
+	orderdetail ol
+WHERE
+	o.id = ol.orders_id
+    </select>
+    <resultMap id="m" type="com.xc.course.pojo.Orders">
+        <id column="id" property="id"></id>
+        <result column="userId" property="userId"></result>
+        <result column="number" property="number"></result>
+        <result column="createtime" property="createtime"></result>
+        <result column="note" property="note"></result>
+
+        <collection property="orderdetails" ofType="Orderdetail">
+            <id column="oid" property="id"></id>
+            <result column="items_id" property="itemsId"></result>
+            <result column="items_num" property="itemsNum"></result>
+            <result column="orders_id" property="ordersId"></result>
+        </collection>
+    </resultMap>
+    <!--一对多结束-->

@@ -1,0 +1,26 @@
+懒加载：需要的时候就加载
+
+select * from orders o,user u WHERE o.user_id=u.id
+
+拆分成两个
+
+SELECT * from  orders;
+select * from user u where u.id=user_id; 
+
+1.0 ----在sqlMapConfig：添加 <settings>
+                         <setting name="lazyLoadingEnabled" value="true"/>
+                      </settings>
+
+1.1-----select  column参数
+<association property="user" javaType="User" select="com.xc.course.mapper.OrdersMapper.findUserById" column="user_id"></association>
+
+
+一级缓存(自带)：是session的缓存，内置
+只有添加  修改 删除  才会清空一级缓存
+
+二级缓存(手动开启)：是基于sessionfactoty,session关闭后才添加二级缓存
+只有添加  修改 删除  才会清空一级缓存
+
+1.0-----在sqlMapConfig：添加<setting name="cacheEnabled" value="true"/>
+
+1.1-----<cache></cache>
